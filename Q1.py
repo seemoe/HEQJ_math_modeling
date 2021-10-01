@@ -25,9 +25,12 @@ class Thread(threading.Thread):
 # get_ltr= lambda o : chr(o+97) # 0 is 'a'
 
 def check( people ):
-	return 0
+	count=1
+	if sum(people) > 0:
+		count += len(people)
+	return count
 
-sorted_people = lambda n : [0 for i in range(n-1)]+[1 for i in range(int(n*0.05))]
+sorted_people = lambda n : [0 for i in range(n-1)]+[random.randint(0,1) for i in range(int(n*0.05))]
 
 def rand( lst ):
 	leng=len(lst)
