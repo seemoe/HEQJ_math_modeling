@@ -64,9 +64,9 @@ def main():
 			clist[i]+=count
 		th_lst.clear()
 	result=[i/repeat for i in clist]
-	plt.plot([x for x in range(st,et)],result)
+	plt.plot([x for x in range(st,et)],result,'m--')
 	plt.show()
-	print(result)
+	print(clist)
 
 
 # 运行
