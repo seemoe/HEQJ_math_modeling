@@ -47,14 +47,21 @@ def start(n):
 def main():
 	## 主函数
 	th_lst=[]
-	for n in range(20,31):
-		th_lst.append(Thread(start,(n,)))
-		th_lst[-1].start()
-	for i in range(len(th_lst)):
-		while th_lst[i].is_alive():
-			time.sleep(0.1)
-		th_lst[i].join()
-		print(th_lst[i].get_result())
+	clist=[0 for i in range(11)]
+	repeat=1000
+	for t in range(repeat):
+		for n in range(20,31):
+			th_lst.append(Thread(start,(n,)))
+			th_lst[-1].start()
+		for i in range(len(th_lst)):
+			while th_lst[i].is_alive():
+				time.sleep(0.1)
+			th_lst[i].join()
+			count=th_lst[i].get_result()
+			clist[i]+=count
+		th_lst.clear()
+	result=[i/repeat for i in clist]
+	print(result)
 
 
 # 运行
