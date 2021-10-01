@@ -2,6 +2,7 @@
 import threading
 import random
 import time
+import matplotlib.pyplot as plt
 
 # 多线程重写
 
@@ -47,10 +48,12 @@ def start(n):
 def main():
 	## 主函数
 	th_lst=[]
-	clist=[0 for i in range(11)]
+	st=1
+	et=31
+	clist=[0 for i in range(et-st)]
 	repeat=1000
 	for t in range(repeat):
-		for n in range(20,31):
+		for n in range(st,et):
 			th_lst.append(Thread(start,(n,)))
 			th_lst[-1].start()
 		for i in range(len(th_lst)):
@@ -61,6 +64,8 @@ def main():
 			clist[i]+=count
 		th_lst.clear()
 	result=[i/repeat for i in clist]
+	plt.plot([x for x in range(st,et)],result)
+	plt.show()
 	print(result)
 
 
