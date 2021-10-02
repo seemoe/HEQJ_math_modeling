@@ -27,18 +27,16 @@ class Thread(threading.Thread):
 
 def check( people ):
 	count=1
-	# if sum(people) > 0:
-	# 	find=True
-	# 	while find:
-	# 		count+=1
-	# 		if sum( people[0:int(len(people)/2)] )>0:
-	# 			people=people[0:int(len(people)/2)]
-	# 		else:
-	# 			people=people[int(len(people)/2):len(people)]
-	# 		if len(people)==1:
-	# 			find=False
 	if sum(people) > 0:
-		count+=len(people)
+		find=True
+		while find:
+			count+=1
+			if sum( people[0:int(len(people)/2)] )>0:
+				people=people[0:int(len(people)/2)]
+			else:
+				people=people[int(len(people)/2):len(people)]
+			if len(people)==1:
+				find=False
 	return count
 
 # sorted_people = lambda n : [0 for i in range(n-1)]+[random.randint(0,1) for i in range(int(n*0.05))]
