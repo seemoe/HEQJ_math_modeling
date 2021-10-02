@@ -3,6 +3,7 @@ import threading
 import random
 import time
 import matplotlib.pyplot as plt
+
 # 多线程重写
 
 class Thread(threading.Thread):
