@@ -25,22 +25,44 @@ class Thread(threading.Thread):
 
 # get_ltr= lambda o : chr(o+97) # 0 is 'a'
 
-def check( people ):
-	count=1
+def numful(n):
+	i=1
+	while i*(i+1)<n:
+		i+=1
+	return i,i+1
+
+# 使用二分检测
+def check1( people ):
+	count+=1
 	if sum(people) > 0:
-		find=True
-		while find:
-			count+=1
-			if sum( people[0:int(len(people)/2)] )>0:
-				people=people[0:int(len(people)/2)]
-			else:
-				people=people[int(len(people)/2):len(people)]
-			if len(people)==1:
-				find=False
+		# while find:
+		# 	count+=1
+		# 	if sum( people[0:int(len(people)/2)] )>0:
+		# 		people=people[0:int(len(people)/2)]
+		# 	else:
+		# 		people=people[int(len(people)/2):len(people)]
+		# 	if len(people)==1:
+		# 		find=False
+		count+=check1(people[0:int(len(people)/2)])
+		count+=check1( people[int(len(people)/2):len(people)] )
 	return count
 
+# 使用点位检测(x,y)
+def check2( people ):
+	leng=len(people)
+	a,b=numful(leng) # b=a+1
+	lst=[]
+	k=-1
+	for i in range(a):
+		list.append([])
+		for j in range(b):
+			k+=1
+			lst[i][j]=people[k] if k<leng else 0
+	
+
+
 # sorted_people = lambda n : [0 for i in range(n-1)]+[random.randint(0,1) for i in range(int(n*0.05))]
-new_people = lambda n : [random.randint(0,1) for i in range(n)]
+new_people = lambda n : [random.randint(0,1) for i in range(n)] # 0没得1得
 
 def rand( lst ):
 	leng=len(lst)
@@ -54,7 +76,7 @@ def start(n):
 	ntp=new_people(n)
 	# people=rand(stp)
 	people=rand(ntp)
-	return check(people)
+	return check1(people),check2(people)
 
 def main():
 	## 主函数
@@ -62,6 +84,7 @@ def main():
 	st=1
 	et=31
 	clist=[0 for i in range(et-st)]
+	c2list=[0 for i in range(et-st)]
 	repeat=10000
 	for t in range(repeat):
 		for n in range(st,et):
@@ -71,11 +94,14 @@ def main():
 			while th_lst[i].is_alive():
 				time.sleep(0.1)
 			th_lst[i].join()
-			count=th_lst[i].get_result()
-			clist[i]+=count
+			count1,count2=th_lst[i].get_result()
+			clist[i]+=count1
+			c2list[i]+=count2
 		th_lst.clear()
 	result=[i/repeat for i in clist]
+	result2=[i/repeat for i in c2list]
 	plt.plot([x for x in range(st,et)],result,'m--')
+	plt.plot([x for x in range(st,et)],result2,'g-')
 	plt.show()
 	print(clist)
 
