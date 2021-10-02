@@ -31,16 +31,8 @@ def numful(n):
 		i+=1
 	return i,i+1
 
-# 使用二分检测
-def check1( people ):
-	count=1
-	if sum(people) > 0 and len(people)>1:
-		count+=check1(people[0:int(len(people)/2)])
-		count+=check1(people[int(len(people)/2):len(people)])
-	return count
-
 # 使用点位检测(x,y)
-def check2( people ):
+def check( people ):
 	leng=len(people)
 	a,b=numful(leng) # b=a+1
 	lst=[]
@@ -69,7 +61,7 @@ def check2( people ):
 		return count
 
 # sorted_people = lambda n : [0 for i in range(n-1)]+[random.randint(0,1) for i in range(int(n*0.05))]
-new_people = lambda n : [(0 if random.randint(1,100) <= 15 else 1) for i in range(n)] # 0没得1得
+new_people = lambda n : [(0 if random.randint(1,100) <= 5 else 1) for i in range(n)] # 0没得1得
 
 def rand( lst ):
 	leng=len(lst)
@@ -83,34 +75,32 @@ def start(n):
 	ntp=new_people(n)
 	# people=rand(stp)
 	people=rand(ntp)
-	return check1(people),check2(people)
+	return check(people),n
 
 def main():
-	## 主函数
-	# th_lst=[]
-	# clist=[0 for i in range(et-st)]
-	# c2list=[0 for i in range(et-st)]
-	repeat=1000
-	for t in range(repeat):
-		# for n in range(st,et):
-		# 	th_lst.append(Thread(start,(n,)))
-		# 	th_lst[-1].start()
-		# for i in range(len(th_lst)):
-		# 	while th_lst[i].is_alive():
-		# 		time.sleep(0.1)
-		# 	th_lst[i].join()
-		# 	count1,count2=th_lst[i].get_result()
-		# 	clist[i]+=count1
-		# 	c2list[i]+=count2
-		# th_lst.clear()
-	# result=[i/repeat for i in clist]
-	# result2=[i/repeat for i in c2list]
-	# # 虚线二分实线点位
-	# plt.plot([x for x in range(st,et)],result,'m--')
-	# plt.plot([x for x in range(st,et)],result2,'g-')
+	loop=100000
+	th_num=1000
+	result={}
+	for times in range(0,loop,th_num):
+		th_lst=[]
+		for i in range(th_num):
+			num=random.randint(1000,10000)
+			th_lst.append(Thread(start,(num,)))
+			th_lst[-1].start()
+		for i in range(th_num):
+			while th_lst[i].is_alive():
+				time.sleep(0.1)
+			th_lst[i].join()
+			count,num=th_lst[i].get_result()
+			if num in result.keys:
+				result[num][0]+=count
+				result[num][1]+=1
+			else:
+				result[num]=[count,1]
+	xlist=result.keys
+	ylist=[x/y for x,y in [result[i] for i in range(len(xlist))]]
+	plt.plot(xlist,ylist,'g-')
 	plt.show()
-	print(clist)
-
 
 # 运行
 
