@@ -39,7 +39,8 @@ def check( people ):
 				find=False
 	return count
 
-sorted_people = lambda n : [0 for i in range(n-1)]+[random.randint(0,1) for i in range(int(n*0.05))]
+# sorted_people = lambda n : [0 for i in range(n-1)]+[random.randint(0,1) for i in range(int(n*0.05))]
+new_people = lambda n : [random.randint(0,1) for i in range(n)]
 
 def rand( lst ):
 	leng=len(lst)
@@ -49,8 +50,10 @@ def rand( lst ):
 	return lst
 
 def start(n):
-	stp=sorted_people(n)
-	people=rand(stp)
+	# stp=sorted_people(n)
+	ntp=new_people(n)
+	# people=rand(stp)
+	people=rand(ntp)
 	return check(people)
 
 def main():
