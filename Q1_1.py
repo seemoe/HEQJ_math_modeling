@@ -42,7 +42,7 @@ def check( people ):
 	return count
 
 # sorted_people = lambda n : [0 for i in range(n-1)]+[random.randint(0,1) for i in range(int(n*0.05))]
-new_people = lambda n : [random.randint(0,1) for i in range(n)]
+new_people = lambda n : [(0 if random.randint(1,100) <= 15 else 1) for i in range(n)] # 0没得1得
 
 def rand( lst ):
 	leng=len(lst)
