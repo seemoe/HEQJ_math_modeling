@@ -33,18 +33,10 @@ def numful(n):
 
 # 使用二分检测
 def check1( people ):
-	count+=1
-	if sum(people) > 0:
-		# while find:
-		# 	count+=1
-		# 	if sum( people[0:int(len(people)/2)] )>0:
-		# 		people=people[0:int(len(people)/2)]
-		# 	else:
-		# 		people=people[int(len(people)/2):len(people)]
-		# 	if len(people)==1:
-		# 		find=False
+	count=1
+	if sum(people) > 0 and len(people)>1:
 		count+=check1(people[0:int(len(people)/2)])
-		count+=check1( people[int(len(people)/2):len(people)] )
+		count+=check1(people[int(len(people)/2):len(people)])
 	return count
 
 # 使用点位检测(x,y)
@@ -53,16 +45,31 @@ def check2( people ):
 	a,b=numful(leng) # b=a+1
 	lst=[]
 	k=-1
+	count=1
+	if sum(people)==0:
+		return 1
 	for i in range(a):
-		list.append([])
+		lst.append([])
 		for j in range(b):
 			k+=1
-			lst[i][j]=people[k] if k<leng else 0
-	
-
+			lst[i].append(people[k] if k<leng else 0)
+	tx=[]
+	ty=[]
+	for i in range(a):
+		count+=1
+		if sum(lst[i])>0:
+			tx.append(i)
+	for i in range(b):
+		count+=1
+		if sum([lst[z][i] for z in range(a)])>0:
+			ty.append(i)
+	if (len(tx) and len(ty))>1:
+		return count+len(tx)*len(ty)
+	else:
+		return count
 
 # sorted_people = lambda n : [0 for i in range(n-1)]+[random.randint(0,1) for i in range(int(n*0.05))]
-new_people = lambda n : [random.randint(0,1) for i in range(n)] # 0没得1得
+new_people = lambda n : [(0 if random.randint(1,100) <= 15 else 1) for i in range(n)] # 0没得1得
 
 def rand( lst ):
 	leng=len(lst)
@@ -85,7 +92,7 @@ def main():
 	et=31
 	clist=[0 for i in range(et-st)]
 	c2list=[0 for i in range(et-st)]
-	repeat=10000
+	repeat=1000
 	for t in range(repeat):
 		for n in range(st,et):
 			th_lst.append(Thread(start,(n,)))
@@ -100,6 +107,7 @@ def main():
 		th_lst.clear()
 	result=[i/repeat for i in clist]
 	result2=[i/repeat for i in c2list]
+	# 虚线二分实线点位
 	plt.plot([x for x in range(st,et)],result,'m--')
 	plt.plot([x for x in range(st,et)],result2,'g-')
 	plt.show()
