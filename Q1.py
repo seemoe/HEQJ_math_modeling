@@ -59,7 +59,7 @@ def main():
 	st=1
 	et=31
 	clist=[0 for i in range(et-st)]
-	repeat=1000
+	repeat=10000
 	for t in range(repeat):
 		for n in range(st,et):
 			th_lst.append(Thread(start,(n,)))
