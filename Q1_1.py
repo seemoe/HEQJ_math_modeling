@@ -1,8 +1,8 @@
 # 依赖
 import threading
-import random
 import time
 import matplotlib.pyplot as plt
+import numpy as np
 
 # 多线程重写
 
@@ -27,59 +27,43 @@ class Thread(threading.Thread):
 
 def check( people ):
 	count=1
-	# if sum(people) > 0:
-	# 	find=True
-	# 	while find:
-	# 		count+=1
-	# 		if sum( people[0:int(len(people)/2)] )>0:
-	# 			people=people[0:int(len(people)/2)]
-	# 		else:
-	# 			people=people[int(len(people)/2):len(people)]
-	# 		if len(people)==1:
-	# 			find=False
 	if sum(people) > 0:
 		count+=len(people)
 	return count
 
 # sorted_people = lambda n : [0 for i in range(n-1)]+[random.randint(0,1) for i in range(int(n*0.05))]
-new_people = lambda n : [(0 if random.randint(1,100) <= 15 else 1) for i in range(n)] # 0没得1得
+new_people = lambda n : [(0 if np.random.randint(1,10) <= 15 else 1) for i in range(n)] # 0没得1得
 
 def rand( lst ):
 	leng=len(lst)
-	for i in range(leng):
-		o=random.randint(0,leng-1)
+	for i in np.arange(leng):
+		o=np.random.randint(0,leng)
 		lst[i],lst[o]=lst[o],lst[i]
 	return lst
 
-def start(n):
+def start(x,y):
 	# stp=sorted_people(n)
 	ntp=new_people(n)
 	# people=rand(stp)
 	people=rand(ntp)
-	return check(people)
+	return x,y,check(people)
 
 def main():
-	## 主函数
-	th_lst=[]
-	st=1
-	et=31
-	clist=[0 for i in range(et-st)]
-	repeat=10000
-	for t in range(repeat):
-		for n in range(st,et):
-			th_lst.append(Thread(start,(n,)))
+	# x 一组几人(-5) y 总共几人(-1000) content 检测次数
+	zlist=np.zeros([26,99001],np.int32)
+	xlist=np.arange(1,31)
+	ylist=np.arange(1000,100001)
+	for y in np.arange(1000,100001,26):
+		th_lst=[]
+		for x in np.arange(5,31):
+			th_lst.append(Thread(start,(x,y)))
 			th_lst[-1].start()
-		for i in range(len(th_lst)):
+		for i in np.arange(len(th_lst)):
 			while th_lst[i].is_alive():
 				time.sleep(0.1)
 			th_lst[i].join()
-			count=th_lst[i].get_result()
-			clist[i]+=count
-		th_lst.clear()
-	result=[i/repeat for i in clist]
-	plt.plot([x for x in range(st,et)],result,'m--')
-	plt.show()
-	print(clist)
+			x,y,z=th_lst[i].get_result()
+			zlist[x-5][y-1000]=z
 
 
 # 运行

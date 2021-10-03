@@ -27,9 +27,13 @@ class Thread(threading.Thread):
 
 def numful(n):
 	i=1
-	while i*(i+1)<n:
-		i+=1
-	return i,i+1
+	b=1
+	while i*b<n:
+		if i<b:
+			i+=1
+		else:
+			b+=1
+	return i,b
 
 # 使用二分检测
 def check1( people ):
