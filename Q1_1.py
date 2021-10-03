@@ -34,7 +34,7 @@ def check( people ):
 
 # sorted_people = lambda n : [0 for i in range(n-1)]+[random.randint(0,1) for i in range(int(n*0.05))]
 # new_people = lambda n : [(0 if np.random.randint(1,10) <= 15 else 1) for i in np.arange(n)] # 0没得1得
-generate= lambda y,o : [0 for i in np.arange(int(y*o+0.5))]+[np.random.randint(0,2) for j in np.arange(int(y*o))]
+generate= lambda y,o : [0 for i in np.arange(int(y*o+0.5))]+[(1 if np.random.randint(0,101) <=80 else 0) for j in np.arange(int(y*o))]
 
 
 def rand( lst ):
@@ -46,15 +46,16 @@ def rand( lst ):
 
 def start(x,y):
 	# x 一组几人 y 总共几人
-	ori=generate(y,0.05)
-	people=rand(ori)
-	count = 0
-	if y > x:
-		for i in np.arange(0,y,x):
-			count+=check( people[i*x:((i+1)*x if i+1*x <= y else y)] )
-	else:
-		count+=check( people )
-	return x,y,check(people)
+	count=0
+	for times in np.arange(3):
+		ori=generate(y,0.05)
+		people=rand(ori)
+		if y > x:
+			for i in np.arange(0,y,x):
+				count+=check( people[i*x:((i+1)*x if i+1*x <= y else y)] )
+		else:
+			count+=check( people )
+	return x,y,count/3
 
 #########################
 
@@ -84,12 +85,13 @@ def main():
 			th_lst[i].join()
 			x,y,z=th_lst[i].get_result()
 			zlist[x-5][y-begin]=z
+	print(zlist)
 	x,y = np.meshgrid(xlist, ylist)
 	z=np.array( list([get(i,j) for i in xlist] for j in ylist) )
 	print(z)
 	fig = plt.figure()
 	ax = plt.axes(projection='3d')
-	ax.contour3D(x, y, z, 50, cmap='binary')
+	ax.plot_surface(x,y,z,rstride = 1, cstride = 1,cmap='rainbow')
 	ax.set_xlabel('group')
 	ax.set_ylabel('total')
 	ax.set_zlabel('count')
