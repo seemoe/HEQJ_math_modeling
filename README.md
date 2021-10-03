@@ -8,3 +8,11 @@
 
 + 代码：徐晨阳
 + 题目：A（新冠检测）
+
+---
+
+Thanks
+
+- [@seemoe](https://github.com/seemoe)
+- [@samjq](https://github.com/samjq)
+- [@wangyibiao](https://github.com/wangyibiao)
