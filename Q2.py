@@ -84,7 +84,7 @@ def start(x,y):
 
 #########################
 
-people=pow
+people=50000
 
 def main():
 	# x 一组几人(-5) y 总共几人(-1000) content 检测次数
@@ -99,7 +99,7 @@ def main():
 			th_lst[i].join()
 			x,y,z=th_lst[i].get_result()
 			zlist[x-5][y-begin]=z
-	
+
 	plt.show()
 
 
