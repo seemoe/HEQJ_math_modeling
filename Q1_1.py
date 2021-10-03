@@ -92,9 +92,10 @@ def main():
 	fig = plt.figure()
 	ax = plt.axes(projection='3d')
 	ax.plot_surface(x,y,z,rstride = 1, cstride = 1,cmap='rainbow')
-	ax.set_xlabel('group')
-	ax.set_ylabel('total')
-	ax.set_zlabel('count')
+	plt.rcParams['font.sans-serif']=['Microsoft YaHei']
+	ax.set_xlabel('每组人数')
+	ax.set_ylabel('总人数')
+	ax.set_zlabel('检测次数')
 	plt.show()
 
 
