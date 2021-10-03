@@ -84,21 +84,10 @@ def start(x,y):
 
 #########################
 
-begin=1000
-end=1100
-
-zlist=np.zeros([26,end-begin+1],np.int32)
-xlist=np.arange(5,31)
-ylist=np.arange(begin,end+1)
-
-def get(x,y):
-	return zlist[x-5][y-begin]
+people=pow
 
 def main():
 	# x 一组几人(-5) y 总共几人(-1000) content 检测次数
-	global xlist
-	global ylist
-	global zlist
 	for y in np.arange(begin,end+1):
 		th_lst=[]
 		for x in np.arange(5,31):
@@ -110,15 +99,7 @@ def main():
 			th_lst[i].join()
 			x,y,z=th_lst[i].get_result()
 			zlist[x-5][y-begin]=z
-	x,y = np.meshgrid(xlist, ylist)
-	z=np.array( list([get(i,j) for i in xlist] for j in ylist) )
-	print(z)
-	fig = plt.figure()
-	ax = plt.axes(projection='3d')
-	ax.plot_surface(x,y,z,rstride = 1, cstride = 1,cmap='rainbow')
-	ax.set_xlabel('group')
-	ax.set_ylabel('total')
-	ax.set_zlabel('count')
+	
 	plt.show()
 
 

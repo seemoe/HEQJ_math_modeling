@@ -60,7 +60,7 @@ def start(x,y):
 #########################
 
 begin=1000
-end=1100
+end=5000
 
 zlist=np.zeros([26,end-begin+1],np.int32)
 xlist=np.arange(5,31)
@@ -75,6 +75,7 @@ def main():
 	global ylist
 	global zlist
 	for y in np.arange(begin,end+1):
+		print(y)
 		th_lst=[]
 		for x in np.arange(5,31):
 			th_lst.append(Thread(start,(x,y)))
@@ -96,6 +97,7 @@ def main():
 	ax.set_xlabel('每组人数')
 	ax.set_ylabel('总人数')
 	ax.set_zlabel('检测次数')
+	ax.view_init(elev=12, azim=-40)
 	plt.show()
 
 
