@@ -78,7 +78,7 @@ def rand( lst ):
 		lst[i],lst[o]=lst[o],lst[i]
 	return lst
 
-peon=50000
+peon=20000
 
 def start(x):
 	# x 一组几人 peon 总共几人
@@ -118,7 +118,7 @@ def main():
 	ax.set_ylabel('次数（下采样上检测）')
 	ax.set_xlabel('组人数')
 	# 头
-	ax.set_title('总人数为50000时抽血与检测次数和每组人数的关系柱状图')
+	ax.set_title('总人数为20000时抽血与检测次数和每组人数的关系柱状图')
 	plt.show()
 
 
