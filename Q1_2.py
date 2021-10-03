@@ -38,36 +38,30 @@ def numful(n):
 
 # 使用点位检测(x,y)
 def check( people , x ):
+	count=0
 	while len(people) > 0:
 		if len(people)>(x**2):
-			checknow=[people[x*i:(x+1)*i] for i in np.arange()]
+			checknow=[people[x*i:(x+1)*i] for i in np.arange(x)]
 			del people[0:x**2]
-	# leng=len(people)
-	# a,b=numful(leng) # b=a+1
-	# lst=[]
-	# k=-1
-	# count=1
-	# if sum(people)==0:
-	# 	return 1
-	# for i in range(a):
-	# 	lst.append([])
-	# 	for j in range(b):
-	# 		k+=1
-	# 		lst[i].append(people[k] if k<leng else 0)
-	# tx=[]
-	# ty=[]
-	# for i in range(a):
-	# 	count+=1
-	# 	if sum(lst[i])>0:
-	# 		tx.append(i)
-	# for i in range(b):
-	# 	count+=1
-	# 	if sum([lst[z][i] for z in range(a)])>0:
-	# 		ty.append(i)
-	# if (len(tx) and len(ty))>1:
-	# 	return count+len(tx)*len(ty)
-	# else:
-	# 	return count
+		else:
+			a,b=numful(len(people))
+			checknow=[people[a*i:((a+1)*i if (a+1*i) <= len(people) else 0)] for i in np.arange(b)]
+			del people[0:len(people)]
+		xleng=len(checknow[0])
+		yleng=len(checknow)
+		tx=[]
+		ty=[]
+		for i in np.arange(yleng):
+			count+=1
+			if sum(checknow[i]) > 0:
+				ty.append(i)
+		for i in np.arange(xleng):
+			count+=1
+			if sum([checknow[j][i] for j in np.arange(yleng)]) >0:
+				tx.append(i)
+		if len(tx)>=2 and len(ty)>=2:
+			count+=(len(tx)*len(ty))
+	return count
 
 # sorted_people = lambda n : [0 for i in range(n-1)]+[random.randint(0,1) for i in range(int(n*0.05))]
 generate= lambda y,o : [0 for i in np.arange(int(y*o+0.5))]+[(1 if np.random.randint(0,101) <=80 else 0) for j in np.arange(int(y*o))]
@@ -82,9 +76,12 @@ def rand( lst ):
 
 def start(x,y):
 	# x 一组几人 y 总共几人
-	ori=generate(y,0.05)
-	people=rand(ori)
-	return x,y,check(people,x)
+	count=0
+	for i in np.arange(3):
+		ori=generate(y,0.05)
+		people=rand(ori)
+		count+=check(people,x)
+	return x,y,count/3
 
 #########################
 
