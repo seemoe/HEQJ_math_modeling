@@ -2,6 +2,7 @@
 import threading
 import time
 import matplotlib.pyplot as plt
+from mpl_toolkits import mplot3d
 import numpy as np
 
 # 多线程重写
@@ -32,7 +33,9 @@ def check( people ):
 	return count
 
 # sorted_people = lambda n : [0 for i in range(n-1)]+[random.randint(0,1) for i in range(int(n*0.05))]
-new_people = lambda n : [(0 if np.random.randint(1,10) <= 15 else 1) for i in range(n)] # 0没得1得
+# new_people = lambda n : [(0 if np.random.randint(1,10) <= 15 else 1) for i in np.arange(n)] # 0没得1得
+generate= lambda y,o : [0 for i in np.arange(int(y*o+0.5))]+[np.random.randint(0,2) for j in np.arange(int(y*o))]
+
 
 def rand( lst ):
 	leng=len(lst)
@@ -42,18 +45,35 @@ def rand( lst ):
 	return lst
 
 def start(x,y):
-	# stp=sorted_people(n)
-	ntp=new_people(n)
-	# people=rand(stp)
-	people=rand(ntp)
+	# x 一组几人 y 总共几人
+	ori=generate(y,0.05)
+	people=rand(ori)
+	count = 0
+	if y > x:
+		for i in np.arange(0,y,x):
+			count+=check( people[i*x:((i+1)*x if i+1*x <= y else y)] )
+	else:
+		count+=check( people )
 	return x,y,check(people)
+
+#########################
+
+begin=1000
+end=1100
+
+zlist=np.zeros([26,end-begin+1],np.int32)
+xlist=np.arange(5,31)
+ylist=np.arange(begin,end+1)
+
+def get(x,y):
+	return zlist[x-5][y-begin]
 
 def main():
 	# x 一组几人(-5) y 总共几人(-1000) content 检测次数
-	zlist=np.zeros([26,99001],np.int32)
-	xlist=np.arange(1,31)
-	ylist=np.arange(1000,100001)
-	for y in np.arange(1000,100001,26):
+	global xlist
+	global ylist
+	global zlist
+	for y in np.arange(begin,end+1):
 		th_lst=[]
 		for x in np.arange(5,31):
 			th_lst.append(Thread(start,(x,y)))
@@ -63,7 +83,17 @@ def main():
 				time.sleep(0.1)
 			th_lst[i].join()
 			x,y,z=th_lst[i].get_result()
-			zlist[x-5][y-1000]=z
+			zlist[x-5][y-begin]=z
+	x,y = np.meshgrid(xlist, ylist)
+	z=np.array( list([get(i,j) for i in xlist] for j in ylist) )
+	print(z)
+	fig = plt.figure()
+	ax = plt.axes(projection='3d')
+	ax.contour3D(x, y, z, 50, cmap='binary')
+	ax.set_xlabel('group')
+	ax.set_ylabel('total')
+	ax.set_zlabel('count')
+	plt.show()
 
 
 # 运行
